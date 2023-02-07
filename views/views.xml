@@ -1,0 +1,44 @@
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="product_template_inherit" model="ir.ui.view">
+            <field name="name">Product Template Inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='list_price']" position="attributes">
+                    <attribute name="sum">sum of sale</attribute>
+                </xpath>
+                <xpath expr="//field[@name='standard_price']" position="attributes">
+                    <attribute name="sum">sum of cost</attribute>
+                </xpath>
+
+<!--                <xpath expr="//field[@name='list_price']" position="after">-->
+<!--                    <field name="total_sale_price"/>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//field[@name='standard_price']" position="after">-->
+<!--                    <field name="total_cost_price"/>-->
+<!--                </xpath>-->
+<!--                <xpath expr="//field[@name='standard_price']" position="after">-->
+<!--                    <field name="profit"/>-->
+<!--                </xpath>-->
+
+
+            </field>
+        </record>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="inherit_invoice_form" model="ir.ui.view">
+            <field name="name">inherit invoice form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='id']" position="before">
+                    <widget name="web_ribbon" title="Not Paid" attrs="{'invisible': ['|', ('payment_state', '!=', 'not_paid'), ('move_type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>
